@@ -1,5 +1,6 @@
 import json
 import sys
+import yaml
 from os import environ
 
 from phue import Bridge
@@ -60,4 +61,22 @@ for scene_id, scene_attributes in api_scenes.items():
                 }
                 scenes.append(scene)
 
-print(scenes)
+for scene in scenes:
+    script_alias = f'{scene["scene_name"]} - {scene["group_name"]} (Scene)'
+    script_name = f'hue_scene_{scene["group_name"]}_{scene["scene_name"]}'
+    script_slug_name = script_name.replace(' ', '_').lower()
+    script = {
+        'script': {
+            script_slug_name: {
+                'alias': script_alias,
+                'icon': 'mdi:lightbulb',
+                'sequence': [
+                    {
+                        'service': 'hue.hue_activate_scene',
+                        'data': scene
+                    }
+                ]
+            }
+        }
+    }
+    print(yaml.dump(script, sort_keys=False))
