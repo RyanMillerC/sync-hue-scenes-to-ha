@@ -1,3 +1,20 @@
+"""
+Sync Philips Hue scenes to Home assistant.
+
+Because of how Hue scenes are designed, they can only be set by HA and
+not read. This means they can not be imported or used like HA scenes.
+
+This script adds an HA script entity for each scene in Hue. The scripts
+will activate a given scene in HA when called.
+
+This script requires that your Hue Bridge information be set in
+environment variables as: (replace contents in '<>' with your info)
+
+    export HUE_BRIDGE_HOST='<IP of Hue bridge>'
+    export HUE_BRIDGE_USERNAME='<Username/token for Hue bridge auth>
+
+"""
+
 import json
 import sys
 import yaml
