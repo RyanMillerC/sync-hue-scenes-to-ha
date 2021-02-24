@@ -44,7 +44,11 @@ for scene_id, scene_attributes in api_scenes.items():
     scene_type = scene_attributes['type']
     if scene_type == 'GroupScene':
         scene_group_id = scene_attributes['group']
-        scene_room_name = rooms[scene_group_id]
+        scene_room_name = rooms[scene_group_id]['name']
         print(f'{scene_name}:{scene_room_name}')
     elif scene_type == 'LightScene':
-        print(f'Skipping {scene_name} because it is a LightScene')
+        lights = scene_attributes['lights']
+        light = lights[0]  # Check single light for testing only
+        for room in rooms.values():
+            if light in room['lights']:
+                print(f'{scene_name}:{room["name"]}')
