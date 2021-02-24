@@ -48,7 +48,6 @@ for scene_id, scene_attributes in api_scenes.items():
         print(f'{scene_name}:{scene_room_name}')
     elif scene_type == 'LightScene':
         lights = scene_attributes['lights']
-        light = lights[0]  # Check single light for testing only
         for room in rooms.values():
-            if light in room['lights']:
+            if all(light in lights for light in room['lights']):
                 print(f'{scene_name}:{room["name"]}')
