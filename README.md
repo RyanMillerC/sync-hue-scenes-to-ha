@@ -9,9 +9,9 @@ Instead, this script will add an HA script entity for each Hue scene. The
 scripts will call a given Hue scene when activated in HA.
 
 This script requires that your Hue Bridge information be set in
-environment variables as: (replace contents in '<>' with your info)
+environment variables. Replace contents in '<>' with your info.
 
 ```bash
 export HUE_BRIDGE_HOST='<IP of Hue bridge>'
-export HUE_BRIDGE_USERNAME='<Username/token for Hue bridge auth>
+export HUE_BRIDGE_USERNAME='<Username/token for Hue bridge auth>'
 ```
