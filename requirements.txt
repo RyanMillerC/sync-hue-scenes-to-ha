@@ -1,2 +1,2 @@
-phue==1.1
-PyYAML==5.4.1
+phue>=1.1
+PyYAML>=5.4.1
