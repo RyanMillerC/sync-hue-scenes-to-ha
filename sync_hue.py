@@ -16,16 +16,20 @@ environment variables as: (replace contents in '<>' with your info)
 """
 
 
+import glob
 import json
+import os
 import sys
 import yaml
-from os import environ
 
 from phue import Bridge
 
 
 try:
-    bridge = Bridge(environ['HUE_BRIDGE_HOST'], environ['HUE_BRIDGE_USERNAME'])
+    bridge = Bridge(
+        os.environ['HUE_BRIDGE_HOST'],
+        os.environ['HUE_BRIDGE_USERNAME']
+    )
 except:
     print('Set HUE_BRIDGE_HOST and HUE_BRIDGE_USERNAME environment variables!')
     sys.exit(1)
@@ -48,11 +52,19 @@ default_scene_names = [
 
 def main():
     """Execute rest of script."""
+    remove_existing_scripts()
     rooms = get_rooms()
     scenes = get_scenes()
     mapped_scenes = map_scenes_to_rooms(scenes, rooms)
     for group_name, scene_name in mapped_scenes:
         create_yaml(group_name, scene_name)
+
+
+def remove_existing_scripts():
+    """Remove existing scripts from previous run."""
+    existing_scripts = glob.glob('./scripts/hue_scene_*.yaml')
+    for script in existing_scripts:
+        os.remove(script)
 
 
 def get_rooms():
