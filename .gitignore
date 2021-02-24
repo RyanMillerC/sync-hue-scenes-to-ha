@@ -3,3 +3,6 @@
 
 # Ignore environment variables file
 .env
+
+# Ignore generated scripts (Home Assistant YAML files)
+/scripts
