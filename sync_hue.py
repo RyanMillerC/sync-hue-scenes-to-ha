@@ -142,20 +142,18 @@ def create_yaml(group_name, scene_name):
     script_name = f'hue_scene_{group_name}_{scene_name}'
     script_slug_name = script_name.replace(' ', '_').lower()
     script = {
-        'script': {
-            script_slug_name: {
-                'alias': script_alias,
-                'icon': 'mdi:lightbulb',
-                'sequence': [
-                    {
-                        'service': 'hue.hue_activate_scene',
-                        'data': {
-                            'group_name': group_name,
-                            'scene_name': scene_name
-                        }
+        script_slug_name: {
+            'alias': script_alias,
+            'icon': 'mdi:lightbulb',
+            'sequence': [
+                {
+                    'service': 'hue.hue_activate_scene',
+                    'data': {
+                        'group_name': group_name,
+                        'scene_name': scene_name
                     }
-                ]
-            }
+                }
+            ]
         }
     }
     with open(f'./scripts/{script_slug_name}.yaml', 'w') as stream:
