@@ -20,11 +20,27 @@ for group_id, group_attributes in api_groups.items():
             'lights': group_attributes['lights']
         }
 
+default_scene_names = [
+    'Arctic aurora',
+    'Bright',
+    'Concentrate',
+    'Dimmed',
+    'Energize',
+    'Nightlight',
+    'Read',
+    'Relax',
+    'Savanna sunset',
+    'Spring blossom',
+    'Tropical twilight'
+]
+
 api_scenes = bridge.get_scene()
 
 scenes = {}
 for scene_id, scene_attributes in api_scenes.items():
     scene_name = scene_attributes['name']
+    if scene_name in default_scene_names:
+        continue
     scene_type = scene_attributes['type']
     if scene_type == 'GroupScene':
         scene_group_id = scene_attributes['group']
