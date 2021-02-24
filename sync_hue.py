@@ -45,9 +45,11 @@ for scene_id, scene_attributes in api_scenes.items():
     if scene_type == 'GroupScene':
         scene_group_id = scene_attributes['group']
         scene_room_name = rooms[scene_group_id]['name']
-        print(f'{scene_name}:{scene_room_name}')
+        print(f'group_name: {scene_room_name}')
+        print(f'scene_name: {scene_name}')
     elif scene_type == 'LightScene':
         lights = scene_attributes['lights']
         for room in rooms.values():
             if all(light in lights for light in room['lights']):
-                print(f'{scene_name}:{room["name"]}')
+                print(f'group_name: {room["name"]}')
+                print(f'scene_name: {scene_name}')
