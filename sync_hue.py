@@ -79,4 +79,5 @@ for scene in scenes:
             }
         }
     }
-    print(yaml.dump(script, sort_keys=False))
+    with open(f'./scripts/{script_slug_name}.yaml', 'w') as stream:
+        stream.write(yaml.dump(script, sort_keys=False))
