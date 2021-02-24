@@ -20,4 +20,15 @@ for group_id, group_attributes in api_groups.items():
             'lights': group_attributes['lights']
         }
 
-print(rooms)
+api_scenes = bridge.get_scene()
+
+scenes = {}
+for scene_id, scene_attributes in api_scenes.items():
+    scene_name = scene_attributes['name']
+    scene_type = scene_attributes['type']
+    if scene_type == 'GroupScene':
+        scene_group_id = scene_attributes['group']
+        scene_room_name = rooms[scene_group_id]
+        print(f'{scene_name}:{scene_room_name}')
+    elif scene_type == 'LightScene':
+        print(f'Skipping {scene_name} because it is a LightScene')
