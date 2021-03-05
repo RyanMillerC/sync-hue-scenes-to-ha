@@ -6,3 +6,6 @@
 
 # Ignore generated scripts (Home Assistant YAML files)
 /scripts
+
+# Ignore config directory used for testing
+/config
