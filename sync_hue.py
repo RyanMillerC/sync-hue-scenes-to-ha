@@ -28,16 +28,6 @@ import yaml
 from phue import Bridge
 
 
-try:
-    bridge = Bridge(
-        os.environ['HUE_BRIDGE_HOST'],
-        os.environ['HUE_BRIDGE_USERNAME']
-    )
-except:
-    print('Set HUE_BRIDGE_HOST and HUE_BRIDGE_USERNAME environment variables!')
-    sys.exit(1)
-
-
 default_scene_names = [
     'Arctic aurora',
     'Bright',
@@ -56,22 +46,40 @@ default_scene_names = [
 def main():
     """Execute rest of script."""
     remove_existing_scripts()
-    rooms = get_rooms()
-    scenes = get_scenes()
-    mapped_scenes = map_scenes_to_rooms(scenes, rooms)
-    for group_name, scene_name in mapped_scenes:
-        create_yaml(group_name, scene_name)
+    bridges = get_hue_bridges()
+    for bridge in bridges:
+        rooms = get_rooms(bridge)
+        scenes = get_scenes(bridge)
+        mapped_scenes = map_scenes_to_rooms(scenes, rooms)
+        for group_name, scene_name in mapped_scenes:
+            create_yaml(group_name, scene_name)
 
+
+def get_hue_bridges():
+    """Get hue bridge IPs and usernames from HA file."""
+    with open('core.config_entries', 'r') as stream:
+        config_entries = json.load(stream)
+    bridge_info = [
+        entry['data'] for entry in config_entries['data']['entries']
+        if entry['domain'] == 'hue'
+    ]
+    bridges = [
+        Bridge(info['host'], info['username']) for info in bridge_info
+    ]
+    return bridges
 
 def remove_existing_scripts():
-    """Remove existing scripts from previous run."""
+    """Remove existing HA scripts from previous run."""
     existing_scripts = glob.glob('./scripts/hue_scene_*.yaml')
     for script in existing_scripts:
         os.remove(script)
 
 
-def get_rooms():
+def get_rooms(bridge):
     """Get groups of type 'Room' from Hue API.
+
+    :param phue.Bridge bridge:
+        Hue bridge connection
 
     :returns: group_id, name, and lights of each room
     :rtype: dict
@@ -84,10 +92,11 @@ def get_rooms():
     return rooms
 
 
-def get_scenes():
-    """Get scenes from the Hue API.
+def get_scenes(bridge):
+    """Get scenes from the Hue API. Will ignore all default Hue scenes.
 
-    Will ignore all default Hue scenes.
+    :param phue.Bridge bridge:
+        Hue bridge connection
 
     :returns:
     :rtype: list
