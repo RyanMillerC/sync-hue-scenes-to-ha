@@ -17,9 +17,11 @@ scripts will call a given Hue scene when activated in HA.
 
 ## Set Up
 
+Set up this script outside of your Home Assistant config directory.
+
 ```
-git clone https://github.com/RyanMillerC/sync-hue-scenes-to-ha.git <install-path>
-cd <install-path>
+git clone https://github.com/RyanMillerC/sync-hue-scenes-to-ha.git
+cd sync-hue-scenes-to-ha
 pip install --user -r requirements.txt
 ```
 
