@@ -9,12 +9,26 @@ not read. This means they can not be imported or used like HA scenes.
 Instead, this script will add an HA script entity for each Hue scene. The
 scripts will call a given Hue scene when activated in HA.
 
-This script requires that your Hue Bridge information be set in
-environment variables. Replace contents in '<>' with your info.
+## Requirements
+
+* 1 or more Philips Hue bridges configured in Home Assistant through the Hue integration
+* A `./scripts` directory in your Home Assistant config directory
+* *configuration.yaml* must include the line: `script: !include_dir_merge_named scripts/`
+
+## Set Up
+
+```
+git clone https://github.com/RyanMillerC/sync-hue-scenes-to-ha.git <install-path>
+cd <install-path>
+pip install --user -r requirements.txt
+```
+
+## Running
+
+To run:
 
 ```bash
-export HUE_BRIDGE_HOST='<IP of Hue bridge>'
-export HUE_BRIDGE_USERNAME='<Username/token for Hue bridge auth>'
+python sync_hue.py <path-to-home-assistant-config>
 ```
 """
 
