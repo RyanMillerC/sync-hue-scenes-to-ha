@@ -28,7 +28,9 @@ import yaml
 from phue import Bridge
 
 
-default_scene_names = [
+# These scene names will be skipped. Add additional scene names to
+# skip if needed.
+DEFAULT_SCENE_NAMES = [
     'Arctic aurora',
     'Bright',
     'Concentrate',
@@ -41,6 +43,14 @@ default_scene_names = [
     'Spring blossom',
     'Tropical twilight'
 ]
+
+
+try:
+    HOME_ASSISTANT_CONFIG_DIR = sys.argv[1]
+    os.chdir(HOME_ASSISTANT_CONFIG_DIR)
+except IndexError:
+    print('Usage: python sync_hue.py <path-to-home-assistant-config>')
+    sys.exit(1)
 
 
 def main():
@@ -57,7 +67,7 @@ def main():
 
 def get_hue_bridges():
     """Get hue bridge IPs and usernames from HA file."""
-    with open('core.config_entries', 'r') as stream:
+    with open(f'./.storage/core.config_entries', 'r') as stream:
         config_entries = json.load(stream)
     bridge_info = [
         entry['data'] for entry in config_entries['data']['entries']
@@ -67,6 +77,7 @@ def get_hue_bridges():
         Bridge(info['host'], info['username']) for info in bridge_info
     ]
     return bridges
+
 
 def remove_existing_scripts():
     """Remove existing HA scripts from previous run."""
@@ -105,7 +116,7 @@ def get_scenes(bridge):
     api_scenes = bridge.get_scene()
     for scene_id, scene_attributes in api_scenes.items():
         scene_name = scene_attributes['name']
-        if scene_name in default_scene_names:
+        if scene_name in DEFAULT_SCENE_NAMES:
             continue
         scenes[scene_id] = scene_attributes
     return scenes
