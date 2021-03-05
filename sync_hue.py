@@ -71,12 +71,15 @@ def main():
     """Execute rest of script."""
     remove_existing_scripts()
     bridges = get_hue_bridges()
+    print(f'Found {len(bridges)} bridge(s)!')
     for bridge in bridges:
+        print(f'Processing bridge "{bridge.name}" ({bridge.ip})...')
         rooms = get_rooms(bridge)
         scenes = get_scenes(bridge)
         mapped_scenes = map_scenes_to_rooms(scenes, rooms)
         for group_name, scene_name in mapped_scenes:
             create_yaml(group_name, scene_name)
+        print(f'Completed bridge "{bridge.name} ({bridge.ip})"!')
 
 
 def get_hue_bridges():
@@ -95,6 +98,7 @@ def get_hue_bridges():
 
 def remove_existing_scripts():
     """Remove existing HA scripts from previous run."""
+    print('Removing previously generated hue_scene YAML scripts...')
     existing_scripts = glob.glob('./scripts/hue_scene_*.yaml')
     for script in existing_scripts:
         os.remove(script)
@@ -193,7 +197,9 @@ def create_yaml(group_name, scene_name):
             ]
         }
     }
-    with open(f'./scripts/{script_slug_name}.yaml', 'w') as stream:
+    script_file_path = f'./scripts/{script_slug_name}.yaml'
+    print(f'Writing {script_file_path}...')
+    with open(script_file_path, 'w') as stream:
         stream.write(yaml.dump(script, sort_keys=False))
 
 
