@@ -56,6 +56,7 @@ DEFAULT_SCENE_NAMES = [
     'Read',
     'Relax',
     'Savanna sunset',
+    'Scene recoveryScene ',
     'Spring blossom',
     'Tropical twilight'
 ]
