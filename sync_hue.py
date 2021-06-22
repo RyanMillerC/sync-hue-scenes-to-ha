@@ -182,7 +182,7 @@ def create_yaml(group_name, scene_name):
     :param str scene_name:
         Name of scene
     """
-    script_alias = f'{scene_name} - {group_name} (Scene)'
+    script_alias = f'{group_name} - {scene_name} (Scene)'
     script_name = f'hue_scene_{group_name}_{scene_name}'
     script_slug_name = script_name.replace(' ', '_').lower()
     script = {
